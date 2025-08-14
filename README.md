@@ -31,3 +31,15 @@ a recreation of where's waldo. It includes a busy photo where the user is meant 
 
 - store coordinates of characters on the image
 - record player names and completion times
+
+### Schema:
+
+characters:
+
+- coordinates on image (location)
+- character name
+
+scores:
+
+- user name or initials
+- round duration.
