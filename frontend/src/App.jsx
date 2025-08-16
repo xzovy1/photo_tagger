@@ -1,16 +1,22 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 import CastleImage from './CastleImage.jsx'
+import CharacterSelect from './CharacterSelect.jsx'
+import wallyLogo from "./assets/wheres-wally-logo.jpg"
+import wallyWave from "./assets/waldo-wave.jpg"
 
 function App() {
-  const [count, setCount] = useState(0)
-
+  const [imageClicked, setImageClicked] = useState(false);
+  const [selectedLocation, setLocation] = useState({x: null, y: null});
   return (
     <>
-      <h1>Where's Waldo</h1>
-      <CastleImage />
+      <div className='header'>
+        <img src={wallyLogo} alt=""  className='logo'/>
+        <h1>Where's Waldo</h1>
+      </div>
+      {imageClicked ? <CharacterSelect selectedLocation={selectedLocation} setImageClicked={setImageClicked}/> : null}
+      <CastleImage imageClicked={imageClicked} setImageClicked={setImageClicked} selectedLocation={selectedLocation} setLocation={setLocation}/>
+      <img src={wallyWave} alt="" id='wallywave'/>
     </>
   )
 }
