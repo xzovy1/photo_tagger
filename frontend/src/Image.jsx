@@ -28,9 +28,11 @@ const Image = ({imageClicked, setImageClicked, setLocation}) => {
     //     }
     // })
     const mousePosition = useMousePosition();
-    let transform = `translateX(${mousePosition.x }px) translateY(${mousePosition.y }px)`;
-    let backgroundPosition = `${-(mousePosition.x - imagePosition.left +200) * 2.47}px ${-(mousePosition.y - imagePosition.top - 15) * 2.5}px`
-    console.log(imagePosition, window.innerHeight, window.innerWidth)
+    let transform = `translateX(${mousePosition.x }px) translateY(${mousePosition.y }px)`;;
+    //original image dimensions : 2828 * 1828
+    //
+    let backgroundPosition = `${-(mousePosition.x - imagePosition.left - 27 ) * (2828 / imagePosition.width)}px ${-(mousePosition.y - imagePosition.top - 27) *  (1828 / imagePosition.height)}px`
+    console.log(mousePosition.x, imagePosition, window.innerWidth)
     
     return (
         <>
