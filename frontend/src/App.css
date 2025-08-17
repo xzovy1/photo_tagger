@@ -16,7 +16,7 @@
   padding: 1.5em;
   will-change: filter;
   transition: filter 300ms;
-  animation: logo-spin 8s linear infinite;
+  animation: logo-spin 4s linear ;
   border-radius: 50%;
   z-index: 0;
 }
@@ -51,16 +51,16 @@
 }
 
 .image {
-  width: 98%;
+  width: 90%;
   height: auto;
   z-index: 1;
 }
 
 #modal {
-  background-color: rgba(203, 203, 203, 0.876);
+  background-color: rgb(231, 231, 231);
   position: absolute;
   z-index: 1000;
-  left: 35%;
+  left: 0%;
   width: 250px;
   border-radius: 5px;
   padding: 8px;
@@ -92,3 +92,18 @@
   transform: rotateY(180deg);
   z-index: -1;
 }
+
+#magnifier{
+  z-index: 1;
+  border:1px solid black;
+  position: absolute;
+  width: 175px;
+  height: 175px;
+  border-radius: 50%;
+}
+
+/* #zoomed-image{
+  position: relative;
+  left: 0;
+  
+} */
