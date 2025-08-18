@@ -23,9 +23,10 @@ const Image = ({imageClicked, setImageClicked, setLocation, magnified}) => {
     let transform = `translateX(${mousePosition.x }px) translateY(${mousePosition.y }px)`;;
     //original image dimensions : 2828 * 1828
     // find a calculated value for the -27 on x and y for varying image sizes
-    let backgroundPosition = `${-(mousePosition.x - imagePosition.left - 27 ) * (2828 / imagePosition.width)}px ${-(mousePosition.y - imagePosition.top - 27) *  (1828 / imagePosition.height)}px`
-    console.log(mousePosition.x, imagePosition, window.innerWidth)
-    
+    let magnifyX = -(mousePosition.x - imagePosition.left - 27 ) * (2828 / imagePosition.width);
+    let magnifyY = -(mousePosition.y - imagePosition.top - 27) *  (1828 / imagePosition.height)
+    let backgroundPosition = `${magnifyX}px ${magnifyY}px`
+    console.log(backgroundPosition)
     return (
         <>
         {
@@ -33,7 +34,7 @@ const Image = ({imageClicked, setImageClicked, setLocation, magnified}) => {
             <div id="magnifier" style={{
                 transform, 
                 backgroundImage: `url(${wheresWaldo})`, 
-                backgroundPosition, 
+                backgroundPosition,
                 backgroundRepeat: "no-repeat",
                 top: 0,
                 left: 0
