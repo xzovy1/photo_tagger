@@ -18,19 +18,11 @@ const Image = ({imageClicked, setImageClicked, setLocation, magnified}) => {
         const image = document.getElementById("image")
         setImagePosition(image.getBoundingClientRect())
     },[])
-    // useEffect(()=>{
-    //     if(
-    //         (mousePosition.x >= imagePosition.left && mousePosition.x <= imagePosition.right) &&
-    //         (mousePosition.y >= imagePosition.top && mousePosition.y <= imagePosition.bottom)
-    //     ){
-    //         (Math.floor(mousePosition.x - imagePosition.left), Math.floor(mousePosition.y - imagePosition.top))
-    //         console.log(mousePosition.x)
-    //     }
-    // })
+
     const mousePosition = useMousePosition();
     let transform = `translateX(${mousePosition.x }px) translateY(${mousePosition.y }px)`;;
     //original image dimensions : 2828 * 1828
-    //
+    // find a calculated value for the -27 on x and y for varying image sizes
     let backgroundPosition = `${-(mousePosition.x - imagePosition.left - 27 ) * (2828 / imagePosition.width)}px ${-(mousePosition.y - imagePosition.top - 27) *  (1828 / imagePosition.height)}px`
     console.log(mousePosition.x, imagePosition, window.innerWidth)
     
