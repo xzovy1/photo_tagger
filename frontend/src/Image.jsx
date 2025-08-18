@@ -14,6 +14,19 @@ const Image = ({imageClicked, setImageClicked, setLocation, magnified}) => {
             setLocation({x: Math.floor(mousePosition.x - imagePosition.left),  y: Math.floor(mousePosition.y - imagePosition.top)})
         }
     }
+    const addLocator = (x, y) => {
+        console.log(x,y)
+        const parent = document.getElementById("locators")
+        const newDiv = document.createElement("div");
+        newDiv.classList.add("locator");
+        newDiv.style.position = "absolute";
+        const size = 30
+        newDiv.style.top = `${y - (size/2)}px`;
+        newDiv.style.left = `${x - (size /2)}px`;
+        newDiv.style.width = `${size }px`
+        newDiv.style.height = `${size }px`
+        parent.appendChild(newDiv)
+        }
     useEffect(()=>{
         const image = document.getElementById("image")
         setImagePosition(image.getBoundingClientRect())
@@ -26,7 +39,6 @@ const Image = ({imageClicked, setImageClicked, setLocation, magnified}) => {
     let magnifyX = -(mousePosition.x - imagePosition.left - 27 ) * (2828 / imagePosition.width);
     let magnifyY = -(mousePosition.y - imagePosition.top - 27) *  (1828 / imagePosition.height)
     let backgroundPosition = `${magnifyX}px ${magnifyY}px`
-    console.log(backgroundPosition)
     return (
         <>
         {
@@ -41,7 +53,8 @@ const Image = ({imageClicked, setImageClicked, setLocation, magnified}) => {
             }}></div>  
             : null   
         }
-        <div onClick={handleCharacterSelect}>
+        <div id="locators"></div>
+        <div onClick={()=>{handleCharacterSelect(); addLocator(mousePosition.x, mousePosition.y)}}>
         <img src={wheresWaldo} alt="waldo" className="image" id="image" /> 
         </div>
         </>

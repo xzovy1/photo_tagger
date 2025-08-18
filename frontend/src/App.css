@@ -106,3 +106,7 @@
   border-radius: 50%;
 }
 
+.locator {
+  border: 3px solid red;
+}
+
