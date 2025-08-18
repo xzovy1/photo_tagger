@@ -10,6 +10,9 @@
   grid-template-rows: 1fr;
   grid-template-columns: 1fr 2fr 1fr;
   align-items: center;
+  justify-self: center;
+  align-self: center;
+  width: 90%;
 }
 .logo {
   height: 6em;
@@ -19,6 +22,7 @@
   animation: logo-spin 4s linear ;
   border-radius: 50%;
   z-index: 0;
+  justify-self: center;
 }
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
@@ -102,8 +106,3 @@
   border-radius: 50%;
 }
 
-/* #zoomed-image{
-  position: relative;
-  left: 0;
-  
-} */

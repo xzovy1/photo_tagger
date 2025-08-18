@@ -2,7 +2,7 @@ import wheresWaldo from "./assets/1_7v_75ZGg1CTmWAw1rEgMHQ.webp";
 import useMousePosition from "./hooks/useMousePosition";
 import { useState, useEffect } from "react";
 
-const Image = ({imageClicked, setImageClicked, setLocation}) => {
+const Image = ({imageClicked, setImageClicked, setLocation, magnified}) => {
     const [imagePosition, setImagePosition] = useState({left: null, right: null, top: null, bottom: null});
     
     const handleCharacterSelect = () => {
@@ -36,14 +36,18 @@ const Image = ({imageClicked, setImageClicked, setLocation}) => {
     
     return (
         <>
-        <div id="magnifier" style={{
-            transform, 
-            backgroundImage: `url(${wheresWaldo})`, 
-            backgroundPosition, 
-            backgroundRepeat: "no-repeat",
-            top: 0,
-            left: 0
-        }}></div>     
+        {
+            magnified ? 
+            <div id="magnifier" style={{
+                transform, 
+                backgroundImage: `url(${wheresWaldo})`, 
+                backgroundPosition, 
+                backgroundRepeat: "no-repeat",
+                top: 0,
+                left: 0
+            }}></div>  
+            : null   
+        }
         <div onClick={handleCharacterSelect}>
         <img src={wheresWaldo} alt="waldo" className="image" id="image" /> 
         </div>
