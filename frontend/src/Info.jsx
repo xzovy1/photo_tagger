@@ -1,0 +1,42 @@
+const Info = ({setShowInfo}) => {
+    const handleClose = () => {
+        setShowInfo(false);
+        //start game timer
+    }
+    const rules = [
+        "Click anywhere on the image to place a locator box and identify the character in the location",
+        "You will be timed based on how quickly all the characters are found",
+        "Click 'Show Magnifier' to toggle the magnifier on and off",
+    ];
+    const dummyScores = [
+        "No Score found",
+        "No Score found",
+        "No Score found",
+        "No Score found",
+        "No Score found",
+    ]
+    return (
+        <div>
+            <div id="rules">
+                <h2>Rules</h2>
+                <ol>
+                    {rules.map((rule, index) => {
+                        return <li key={index}>{rule}</li>
+                    })}
+                </ol>
+                <span>Good Luck!</span>
+            </div>
+            <div id="scoreboard">
+                <h2>High Scores</h2>
+                <ol>
+                    {dummyScores.map((score, index) => {
+                        return <li key={index}><em>{score}</em></li>
+                    })}
+                </ol>
+            </div>
+            <button onClick={handleClose}>Close</button>
+
+        </div>
+    )
+}
+export default Info;

@@ -26,7 +26,7 @@ const Image = ({imageClicked, setImageClicked, setLocation, magnified}) => {
         newDiv.style.width = `${size }px`
         newDiv.style.height = `${size }px`
         parent.appendChild(newDiv)
-        }
+    }
     useEffect(()=>{
         const image = document.getElementById("image")
         setImagePosition(image.getBoundingClientRect())
@@ -54,7 +54,10 @@ const Image = ({imageClicked, setImageClicked, setLocation, magnified}) => {
             : null   
         }
         <div id="locators"></div>
-        <div onClick={()=>{handleCharacterSelect(); addLocator(mousePosition.x, mousePosition.y)}}>
+        <div onClick={()=>{
+            handleCharacterSelect();
+            addLocator(mousePosition.x, mousePosition.y);
+        }}>
         <img src={wheresWaldo} alt="waldo" className="image" id="image" /> 
         </div>
         </>
