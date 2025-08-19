@@ -5,12 +5,13 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 let start, elapsedTime;
-app.post('/api/start', (req, res) => {
+
+app.get('/api/start', (req, res) => {
     start = new Date().toTimeString();
     res.json({ message: `Timer started at ${start}` });
 });
 
-app.post('/api/stop', (req, res) => {
+app.get('/api/stop', (req, res) => {
     elapsedTime = new Date() - new Date(start);
     res.json({ message: `Timer after ${elapsedTime} ms`, elapsedTime });
 });

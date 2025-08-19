@@ -1,5 +1,14 @@
-const Info = ({setShowInfo}) => {
-    const handleClose = () => {
+import { useEffect, useState } from "react";
+
+const Info = ({ setShowInfo }) => {
+    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(false)
+    const handleClose = async () => {
+        setLoading(true);
+
+        await fetch(`${process.env.VITE_URL}/api/start`)
+            .then(response => { response.json() })
+            .then(data => console.log(data));
         setShowInfo(false);
         //start game timer
     }
@@ -15,7 +24,12 @@ const Info = ({setShowInfo}) => {
         "No Score found",
         "No Score found",
         "No Score found",
-    ]
+    ];
+    useEffect(() => {
+        // Fetch high scores from the server
+    }, []);
+
+
     return (
         <div>
             <div id="rules">
@@ -35,7 +49,7 @@ const Info = ({setShowInfo}) => {
                     })}
                 </ol>
             </div>
-            <button onClick={handleClose}>Close</button>
+            <button onClick={handleClose}>Begin</button>
 
         </div>
     )
