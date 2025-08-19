@@ -1,10 +1,12 @@
 import wheresWaldo from "./assets/1_7v_75ZGg1CTmWAw1rEgMHQ.webp";
 import useMousePosition from "./hooks/useMousePosition";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
-const Image = ({imageClicked, setImageClicked, setLocation, magnified}) => {
+const Image = ({imageClicked, setImageClicked, setLocation, magnified, ref}) => {
     const [imagePosition, setImagePosition] = useState({left: null, right: null, top: null, bottom: null});
+    const imageRef = useRef(null);
     
+
     const handleCharacterSelect = () => {
         setImageClicked(!imageClicked);
         if(
@@ -16,7 +18,7 @@ const Image = ({imageClicked, setImageClicked, setLocation, magnified}) => {
     }
     const addLocator = (x, y) => {
         console.log(x,y)
-        const parent = document.getElementById("locators")
+        const parent = ref.current
         const newDiv = document.createElement("div");
         newDiv.classList.add("locator");
         newDiv.style.position = "absolute";
@@ -28,7 +30,7 @@ const Image = ({imageClicked, setImageClicked, setLocation, magnified}) => {
         parent.appendChild(newDiv)
     }
     useEffect(()=>{
-        const image = document.getElementById("image")
+        const image = imageRef.current
         setImagePosition(image.getBoundingClientRect())
     },[])
 
@@ -37,7 +39,8 @@ const Image = ({imageClicked, setImageClicked, setLocation, magnified}) => {
     //original image dimensions : 2828 * 1828
     // find a calculated value for the -27 on x and y for varying image sizes
     let magnifyX = -(mousePosition.x - imagePosition.left - 27 ) * (2828 / imagePosition.width);
-    let magnifyY = -(mousePosition.y - imagePosition.top - 27) *  (1828 / imagePosition.height)
+    let magnifyY = -(mousePosition.y - imagePosition.top - 27) *  (1828 / imagePosition.height);
+    console.log(imagePosition)
     let backgroundPosition = `${magnifyX}px ${magnifyY}px`
     return (
         <>
@@ -54,11 +57,11 @@ const Image = ({imageClicked, setImageClicked, setLocation, magnified}) => {
             : null   
         }
         <div id="locators"></div>
-        <div onClick={()=>{
+        <div ref={ref} onClick={()=>{
             handleCharacterSelect();
             addLocator(mousePosition.x, mousePosition.y);
         }}>
-        <img src={wheresWaldo} alt="waldo" className="image" id="image" /> 
+        <img src={wheresWaldo} alt="waldo" className="image" id="image" ref={imageRef}/> 
         </div>
         </>
     )

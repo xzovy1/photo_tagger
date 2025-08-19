@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import './App.css'
 import Image from './Image.jsx'
 import CharacterSelect from './CharacterSelect.jsx'
@@ -7,17 +7,19 @@ import wallyWave from "./assets/waldo-wave.jpg"
 import Info from './Info.jsx'
 
 function App() {
-  const [showInfo, setShowInfo] = useState(true);
+  const [showInfo, setShowInfo] = useState(false);
   const [imageClicked, setImageClicked] = useState(false);
   const [selectedLocation, setLocation] = useState({x: null, y: null});
   const [magnified, setMagnified] = useState(false);
+  const locatorsRef = useRef(null);
+
   const handleMagnifier = (e) => {
     setMagnified(!magnified);
     e.target.blur();
   }
   const cancelLocation = () => {
     setLocation({x: null, y:null});
-    const locators = document.getElementById("locators");
+    const locators = locatorsRef.current
     locators.children[locators.children.length-1].remove();
   } 
 
@@ -28,10 +30,10 @@ function App() {
         <h1>Where's Waldo?</h1>
         <button onClick={handleMagnifier}>{!magnified ? "Show Magnifier" : "Hide Magnifier"}</button>
       </div>
-      {imageClicked ? <CharacterSelect selectedLocation={selectedLocation} setImageClicked={setImageClicked} cancelLocation={cancelLocation}/> : null}
+      {imageClicked ? <CharacterSelect selectedLocation={selectedLocation} setImageClicked={setImageClicked} cancelLocation={cancelLocation} ref={locatorsRef}/> : null}
       { showInfo ? 
         <Info setShowInfo={setShowInfo}/> : 
-        <Image imageClicked={imageClicked} setImageClicked={setImageClicked} selectedLocation={selectedLocation} setLocation={setLocation} magnified={magnified}/>
+        <Image imageClicked={imageClicked} setImageClicked={setImageClicked} selectedLocation={selectedLocation} setLocation={setLocation} magnified={magnified} ref={locatorsRef}/>
       }
       <img src={wallyWave} alt="" id='wallywave'/>
     </>
