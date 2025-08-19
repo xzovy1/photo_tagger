@@ -40,7 +40,6 @@ const Image = ({imageClicked, setImageClicked, setLocation, magnified, ref}) => 
     // find a calculated value for the -27 on x and y for varying image sizes
     let magnifyX = -(mousePosition.x - imagePosition.left - 27 ) * (2828 / imagePosition.width);
     let magnifyY = -(mousePosition.y - imagePosition.top - 27) *  (1828 / imagePosition.height);
-    console.log(imagePosition)
     let backgroundPosition = `${magnifyX}px ${magnifyY}px`
     return (
         <>
