@@ -17,7 +17,6 @@ const Image = ({imageClicked, setImageClicked, setLocation, magnified, ref}) => 
         }
     }
     const addLocator = (x, y) => {
-        console.log(x,y)
         const parent = ref.current
         const newDiv = document.createElement("div");
         newDiv.classList.add("locator");
