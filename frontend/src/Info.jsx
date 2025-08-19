@@ -4,9 +4,10 @@ const Info = ({setShowInfo}) => {
         //start game timer
     }
     const rules = [
-        "Click anywhere on the image to place a locator box and identify the character in the location",
-        "You will be timed based on how quickly all the characters are found",
-        "Click 'Show Magnifier' to toggle the magnifier on and off",
+        "Click anywhere on the image to place a locator box and identify the character in the location.",
+        "Click 'Cancel Selection' in popup box to cancel locator box placement",
+        "You will be timed based on how quickly all the characters are found.",
+        "Click 'Show Magnifier' to toggle the magnifier on and off.",
     ];
     const dummyScores = [
         "No Score found",

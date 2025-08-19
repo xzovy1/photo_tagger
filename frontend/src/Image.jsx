@@ -30,7 +30,9 @@ const Image = ({imageClicked, setImageClicked, setLocation, magnified, ref}) => 
     }
     useEffect(()=>{
         const image = imageRef.current
-        setImagePosition(image.getBoundingClientRect())
+        const imageData = image.getBoundingClientRect()
+        const {top, bottom, left, right, width, height} = imageData
+        setImagePosition({top, bottom, left, right, width, height})
     },[])
 
     const mousePosition = useMousePosition();
@@ -39,7 +41,8 @@ const Image = ({imageClicked, setImageClicked, setLocation, magnified, ref}) => 
     // find a calculated value for the -27 on x and y for varying image sizes
     let magnifyX = -(mousePosition.x - imagePosition.left - 27 ) * (2828 / imagePosition.width);
     let magnifyY = -(mousePosition.y - imagePosition.top - 27) *  (1828 / imagePosition.height);
-    let backgroundPosition = `${magnifyX}px ${magnifyY}px`
+    let backgroundPosition = `${magnifyX}px ${magnifyY}px`;
+    // console.log(imagePosition)
     return (
         <>
         {

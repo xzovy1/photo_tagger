@@ -7,7 +7,7 @@ import wallyWave from "./assets/waldo-wave.jpg"
 import Info from './Info.jsx'
 
 function App() {
-  const [showInfo, setShowInfo] = useState(true);
+  const [showInfo, setShowInfo] = useState(false);
   const [imageClicked, setImageClicked] = useState(false);
   const [selectedLocation, setLocation] = useState({x: null, y: null});
   const [magnified, setMagnified] = useState(false);
