@@ -7,7 +7,7 @@ import wallyWave from "./assets/waldo-wave.jpg"
 import Info from './Info.jsx'
 
 function App() {
-  const [showInfo, setShowInfo] = useState(false);
+  const [showInfo, setShowInfo] = useState(true);
   const [imageClicked, setImageClicked] = useState(false);
   const [selectedLocation, setLocation] = useState({x: null, y: null});
   const [magnified, setMagnified] = useState(false);
@@ -36,7 +36,7 @@ function App() {
         <Info setShowInfo={setShowInfo}/>  
         <img src={wallyWave} alt="" id='wallywave'/>
         </>:
-        <Image imageClicked={imageClicked} setImageClicked={setImageClicked} selectedLocation={selectedLocation} setLocation={setLocation} magnified={magnified} ref={locatorsRef}/>
+        <Image imageClicked={imageClicked} setImageClicked={setImageClicked} selectedLocation={selectedLocation} setLocation={setLocation} magnified={magnified} ref={locatorsRef} showInfo={showInfo}/>
       }
     </>
   )

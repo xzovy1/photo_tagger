@@ -2,7 +2,7 @@ import wheresWaldo from "./assets/1_7v_75ZGg1CTmWAw1rEgMHQ.webp";
 import useMousePosition from "./hooks/useMousePosition";
 import { useState, useEffect, useRef } from "react";
 
-const Image = ({imageClicked, setImageClicked, setLocation, magnified, ref}) => {
+const Image = ({imageClicked, setImageClicked, setLocation, magnified, ref, showInfo}) => {
     const [imagePosition, setImagePosition] = useState({left: null, right: null, top: null, bottom: null});
     const imageRef = useRef(null);
     
@@ -30,10 +30,8 @@ const Image = ({imageClicked, setImageClicked, setLocation, magnified, ref}) => 
     }
     useEffect(()=>{
         const image = imageRef.current
-        const imageData = image.getBoundingClientRect()
-        const {top, bottom, left, right, width, height} = imageData
-        setImagePosition({top, bottom, left, right, width, height})
-    },[])
+        setImagePosition(image.getBoundingClientRect())
+    },[magnified])
 
     const mousePosition = useMousePosition();
     let transform = `translateX(${mousePosition.x }px) translateY(${mousePosition.y }px)`;;
@@ -42,7 +40,6 @@ const Image = ({imageClicked, setImageClicked, setLocation, magnified, ref}) => 
     let magnifyX = -(mousePosition.x - imagePosition.left - 27 ) * (2828 / imagePosition.width);
     let magnifyY = -(mousePosition.y - imagePosition.top - 27) *  (1828 / imagePosition.height);
     let backgroundPosition = `${magnifyX}px ${magnifyY}px`;
-    // console.log(imagePosition)
     return (
         <>
         {
