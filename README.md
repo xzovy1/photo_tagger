@@ -26,18 +26,12 @@ a recreation of where's waldo. It includes a busy photo where the user is meant 
 
 - handles timer for scoring starting from when photo loads.
 - validates character location with user selection
+- store coordinates of characters on the image
 
 ## DB
-
-- store coordinates of characters on the image
 - record player names and completion times
 
 ### Schema:
-
-characters:
-
-- coordinates on image (location)
-- character name
 
 scores:
 
