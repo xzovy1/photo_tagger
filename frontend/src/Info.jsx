@@ -4,6 +4,7 @@ const Info = ({setShowInfo}) => {
         //start game timer
     }
     const rules = [
+        "See if you can find Waldo, Wenda, Odlaw, Wizard Whitebeard and Woof!",
         "Click anywhere on the image to place a locator box and identify the character in the location.",
         "Click 'Cancel Selection' in popup box to cancel locator box placement",
         "You will be timed based on how quickly all the characters are found.",
