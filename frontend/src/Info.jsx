@@ -1,16 +1,27 @@
 import { useEffect, useState } from "react";
 
-const Info = ({ setShowInfo }) => {
+const Info = ({ setShowInfo, timerStarted, setTimerStarted }) => {
     const [error, setError] = useState(null);
-    const [loading, setLoading] = useState(false)
-    const handleClose = async () => {
+    const [loading, setLoading] = useState(false);
+    
+    const hideInfo = async () => {
         setLoading(true);
+        if(!timerStarted){
 
-        await fetch(`${process.env.VITE_URL}/api/start`)
-            .then(response => { response.json() })
-            .then(data => console.log(data));
-        setShowInfo(false);
-        //start game timer
+            await fetch(`${import.meta.env.VITE_URL}/api/start`, {mode: "cors"})
+            .then(response => {
+                if(response.status >= 400){ throw new Error("Errored")}
+                setTimerStarted(true); 
+                setShowInfo(false);
+                return response.json();
+            })
+            .then(data => console.log(data))
+            .catch(error => setError(error))
+            .finally(()=>setLoading(false))
+        }else{
+            setLoading(false);
+            setShowInfo(false);
+        }
     }
     const rules = [
         "See if you can find Waldo, Wenda, Odlaw, Wizard Whitebeard and Woof!",
@@ -30,7 +41,16 @@ const Info = ({ setShowInfo }) => {
         // Fetch high scores from the server
     }, []);
 
-
+    if(error){return (
+        <div>
+            <h1>An error occurred.</h1>
+        </div>
+    )}
+    if(loading){return (
+        <div>
+            <h1>Loading...</h1>
+        </div>
+    )}
     return (
         <div>
             <div id="rules">
@@ -50,7 +70,7 @@ const Info = ({ setShowInfo }) => {
                     })}
                 </ol>
             </div>
-            <button onClick={handleClose}>Begin</button>
+            <button onClick={hideInfo}>{timerStarted ? "Close" : "Begin"}</button>
 
         </div>
     )

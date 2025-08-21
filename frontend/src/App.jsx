@@ -9,6 +9,7 @@ import Info from './Info.jsx'
 function App() {
   const [showInfo, setShowInfo] = useState(true);
   const [imageClicked, setImageClicked] = useState(false);
+  const [timerStarted, setTimerStarted] = useState(false);
   const [selectedLocation, setLocation] = useState({x: null, y: null});
   const [magnified, setMagnified] = useState(false);
   const locatorsRef = useRef(null);
@@ -28,13 +29,13 @@ function App() {
       <div className='header'>
         <img src={wallyLogo} alt=""  className='logo' onClick={()=>setShowInfo(!showInfo)}/>
         <h1>Where's Waldo?</h1>
-        <button onClick={handleMagnifier}>{!magnified ? "Show Magnifier" : "Hide Magnifier"}</button>
+        {!showInfo ? <button onClick={handleMagnifier}>{!magnified ? "Show Magnifier" : "Hide Magnifier"}</button> : null}
       </div>
       {imageClicked ? <CharacterSelect selectedLocation={selectedLocation} setImageClicked={setImageClicked} cancelLocation={cancelLocation} ref={locatorsRef}/> : null}
       { showInfo ? 
         <>
-        <Info setShowInfo={setShowInfo}/>  
-        <img src={wallyWave} alt="" id='wallywave'/>
+          <Info setShowInfo={setShowInfo} timerStarted={timerStarted} setTimerStarted={setTimerStarted}/>  
+          <img src={wallyWave} alt="" id='wallywave'/>
         </>:
         <Image imageClicked={imageClicked} setImageClicked={setImageClicked} selectedLocation={selectedLocation} setLocation={setLocation} magnified={magnified} ref={locatorsRef} showInfo={showInfo}/>
       }
