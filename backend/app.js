@@ -41,7 +41,7 @@ app.post("/api/complete", (req, res) => {
       elapsedTime,
     });
   } else {
-    return res.json({ message: JSON.stringify(remaining) });
+    return res.json({ remaining });
   }
 });
 

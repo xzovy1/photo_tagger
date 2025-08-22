@@ -1,7 +1,7 @@
 import { useState } from "react";
 import characters from "./characters.js"
 
-const CharacterSelect = ({ setImageClicked, selectedLocation, cancelLocation, imageDimensions, ref, characterRef }) => {
+const CharacterSelect = ({ setImageClicked, selectedLocation, cancelLocation, imageDimensions, locatorsRef, characterRef }) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     async function submit(e) {
@@ -23,6 +23,8 @@ const CharacterSelect = ({ setImageClicked, selectedLocation, cancelLocation, im
             })
             .then(data => {
                 console.log(data)
+                const locators = locatorsRef.current
+                locators.children[locators.children.length - 1].classList.add("located");
                 if (data.remaining.length > 0) {
                     characterRef.current = [...data.remaining]
                 }

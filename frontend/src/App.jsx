@@ -76,7 +76,7 @@ function App() {
             : <GameStats startTime={startTime} setStartTime={setStartTime} setNow={setNow} now={now} intervalRef={intervalRef} characterRef={characterRef} />
         }
       </div>
-      {imageClicked ? <CharacterSelect selectedLocation={selectedLocation} setImageClicked={setImageClicked} cancelLocation={cancelLocation} ref={locatorsRef} imageDimensions={imageDimensions} characterRef={characterRef} /> : null}
+      {imageClicked ? <CharacterSelect selectedLocation={selectedLocation} setImageClicked={setImageClicked} cancelLocation={cancelLocation} locatorsRef={locatorsRef} imageDimensions={imageDimensions} characterRef={characterRef} /> : null}
       {showInfo ?
         <>
           <Info setShowInfo={setShowInfo} timerStarted={timerStarted} setTimerStarted={setTimerStarted} handleTimerStart={handleTimerStart} />
