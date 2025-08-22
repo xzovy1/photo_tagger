@@ -35,7 +35,7 @@ const CharacterSelect = ({setImageClicked, selectedLocation, cancelLocation, ima
                     return (
                         <div key={character.id} className="characterOption">
 
-                            <input type="radio" name="character" id={character.name} value={character.name}/>
+                            <input type="radio" name="characterName" id={character.name} value={character.name}/>
                             <label htmlFor={character.name}>{character.name}</label>
                             <img src={character.src} alt={character.name} />
                         </div>

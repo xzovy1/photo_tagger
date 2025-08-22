@@ -1,16 +1,11 @@
-class Character {
-  constructor(name, x, y) {
-    this.name = name;
-    this.x = x;
-    this.y = y;
-    this.located = false;
-  }
-}
+const characters = [
+  { name: "Waldo", x: 16, y: 84 },
+  { name: "Wizard Whitebeard", x: 28, y: 13 },
+  { name: "Wenda", x: 75, y: 76 },
+  { name: "Odlaw", x: 86, y: 82 },
+  { name: "Woof", x: 61, y: 70 },
+];
 
-const waldo = new Character("Waldo", 16, 84);
-const wizard = new Character("Wizard Whitebeard", 28, 13);
-const wenda = new Character("Wenda", 75, 76);
-const odlaw = new Character("Odlaw", 86, 82);
-const woof = new Character("Woof", 61, 70);
+characters.map((character) => (character.located = false));
 
-export const characters = [waldo, wizard, wenda, odlaw, woof];
+export default characters;

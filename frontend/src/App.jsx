@@ -19,7 +19,6 @@ function App() {
   useEffect(()=>{
     const handleResize = () => {
       const image = imageRef.current.getBoundingClientRect();
-      console.log(image.width, image.height)
       setImageDimensions(image)
     };
     window.addEventListener("resize", handleResize);

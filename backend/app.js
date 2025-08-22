@@ -2,7 +2,7 @@ import express from "express";
 import "dotenv/config";
 import cors from "cors";
 import multer from "multer";
-import { characters } from "./characterLocations.js";
+import characters from "./characterLocations.js";
 const app = express();
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
@@ -38,27 +38,38 @@ app.post("/api/submitScore", (req, res) => {
 
 // validate character name and location
 app.post("/api/validate", upload.none(), (req, res) => {
-  const { x, y, width, height, character } = req.body;
+  const { x, y, width, height, characterName } = req.body;
 
   function round(value1, value2) {
     let number = (parseFloat(value1) / parseFloat(value2)) * 100;
     return Math.floor(number);
-    // return Math.round(number * 10) / 10;
   }
   const xRatio = round(x, width);
   const yRatio = round(y, height);
-  const selected = characters.find((char) => {
-    if (char.name === character) {
-      return char;
+
+  const selected = characters.find((character) => {
+    if (character.name === characterName) {
+      return character.name;
     }
   });
+
   if (x < 0 || y < 0 || Number.isNaN(xRatio) || Number.isNaN(yRatio)) {
     return res.status(400).json({ message: "Invalid coordinates" });
   }
   if (selected.x == xRatio && selected.y == yRatio) {
     console.log(`${selected.name} found`);
+    const remaining = characters.reduce((results, character) => {
+      if (character.name === characterName) {
+        character.located = true;
+      } else {
+        results.push(character.name);
+      }
+      return results;
+    }, []);
+    console.log(remaining);
     return res.json({
       message: `${selected.name} found!`,
+      remaining: `${JSON.stringify(remaining)}`,
     });
   } else {
     console.log(`${selected.name} is not there`);
