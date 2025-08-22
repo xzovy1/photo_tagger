@@ -4,6 +4,7 @@ import characters from "./characters.js"
 const CharacterSelect = ({ setImageClicked, selectedLocation, cancelLocation, imageDimensions, locatorsRef, characterRef }) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+
     async function submit(e) {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
@@ -11,6 +12,7 @@ const CharacterSelect = ({ setImageClicked, selectedLocation, cancelLocation, im
         formData.set("y", selectedLocation.y);
         formData.set("width", imageDimensions.width);
         formData.set("height", imageDimensions.height);
+        setLoading(true)
         await fetch(`${import.meta.env.VITE_URL}/api/validate`,
             {
                 mode: "cors",
@@ -28,10 +30,10 @@ const CharacterSelect = ({ setImageClicked, selectedLocation, cancelLocation, im
                 if (data.remaining.length > 0) {
                     characterRef.current = [...data.remaining]
                 }
+                setImageClicked(false)
             })
             .catch(error => setError(error))
             .finally(() => setLoading(false))
-        setImageClicked(false)
     }
     return (
         <div id="modal">
@@ -51,6 +53,7 @@ const CharacterSelect = ({ setImageClicked, selectedLocation, cancelLocation, im
                 </div>
                 <button>Choose</button>
             </form>
+            {error ? <div style={{ color: 'red' }}>an error occurred</div> : null}
         </div>
     )
 }
