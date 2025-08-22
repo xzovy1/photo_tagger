@@ -11,36 +11,36 @@ function App() {
   const [showInfo, setShowInfo] = useState(true);
   const [imageClicked, setImageClicked] = useState(false);
   const [timerStarted, setTimerStarted] = useState(false);
-  const [selectedLocation, setLocation] = useState({x: null, y: null});
-  const [imageDimensions, setImageDimensions] = useState({left: null, right: null, top: null, bottom: null});
+  const [selectedLocation, setLocation] = useState({ x: null, y: null });
+  const [imageDimensions, setImageDimensions] = useState({ left: null, right: null, top: null, bottom: null });
   const [magnified, setMagnified] = useState(false);
   const [startTime, setStartTime] = useState(null);
   const [now, setNow] = useState(null);
 
-  
-  function handleTimerStart(){
+
+  function handleTimerStart() {
     setStartTime(Date.now());
     setNow(Date.now());
-    
+
     clearInterval(intervalRef.current);
-    intervalRef.current = setInterval(()=>{
+    intervalRef.current = setInterval(() => {
       setNow(Date.now());
     }, 10);
   }
-  function handleStop(){
-      clearInterval(intervalRef.current)
+  function handleStop() {
+    clearInterval(intervalRef.current)
   }
-  
+
   const intervalRef = useRef(null);
   const imageRef = useRef(null)
   const locatorsRef = useRef(null);
-  useEffect(()=>{
+  useEffect(() => {
     const handleResize = () => {
       const image = imageRef.current.getBoundingClientRect();
       setImageDimensions(image)
     };
     window.addEventListener("resize", handleResize);
-    return ()=>{window.removeEventListener("resize", handleResize)}
+    return () => { window.removeEventListener("resize", handleResize) }
   }, [])
 
   const handleMagnifier = (e) => {
@@ -48,29 +48,29 @@ function App() {
     e.target.blur();
   }
   const cancelLocation = () => {
-    setLocation({x: null, y:null});
+    setLocation({ x: null, y: null });
     const locators = locatorsRef.current
-    locators.children[locators.children.length-1].remove();
+    locators.children[locators.children.length - 1].remove();
     setImageClicked(false)
-  } 
+  }
 
   return (
     <>
       <div className='header'>
-        <img src={wallyLogo} alt=""  className='logo' onClick={()=>setShowInfo(!showInfo)}/>
+        <img src={wallyLogo} alt="" className='logo' onClick={() => setShowInfo(!showInfo)} />
         <h1>Where's Waldo?</h1>
         {
-          !showInfo ? <button onClick={handleMagnifier}>{!magnified ? "Show Magnifier" : "Hide Magnifier"}</button> 
-          : <GameStats startTime={startTime} setStartTime={setStartTime} setNow={setNow} now={now} intervalRef={intervalRef}/>
+          !showInfo ? <button onClick={handleMagnifier}>{!magnified ? "Show Magnifier" : "Hide Magnifier"}</button>
+            : <GameStats startTime={startTime} setStartTime={setStartTime} setNow={setNow} now={now} intervalRef={intervalRef} />
         }
       </div>
-      {imageClicked ? <CharacterSelect selectedLocation={selectedLocation} setImageClicked={setImageClicked} cancelLocation={cancelLocation} ref={locatorsRef} imageDimensions={imageDimensions}/> : null}
-      { showInfo ? 
+      {imageClicked ? <CharacterSelect selectedLocation={selectedLocation} setImageClicked={setImageClicked} cancelLocation={cancelLocation} ref={locatorsRef} imageDimensions={imageDimensions} /> : null}
+      {showInfo ?
         <>
-          <Info setShowInfo={setShowInfo} timerStarted={timerStarted} setTimerStarted={setTimerStarted} handleTimerStart={handleTimerStart}/>  
-          <img src={wallyWave} alt="" id='wallywave'/>
-        </>:
-        <Image imageClicked={imageClicked} setImageClicked={setImageClicked} selectedLocation={selectedLocation} setLocation={setLocation} magnified={magnified} locatorsRef={locatorsRef} imageRef={imageRef} showInfo={showInfo} imageDimensions={imageDimensions} setImageDimensions={setImageDimensions}/>
+          <Info setShowInfo={setShowInfo} timerStarted={timerStarted} setTimerStarted={setTimerStarted} handleTimerStart={handleTimerStart} />
+          <img src={wallyWave} alt="" id='wallywave' />
+        </> :
+        <Image imageClicked={imageClicked} setImageClicked={setImageClicked} selectedLocation={selectedLocation} setLocation={setLocation} magnified={magnified} locatorsRef={locatorsRef} imageRef={imageRef} showInfo={showInfo} imageDimensions={imageDimensions} setImageDimensions={setImageDimensions} />
       }
     </>
   )

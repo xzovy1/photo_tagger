@@ -1,12 +1,9 @@
-import { useEffect, useState, useRef } from "react";
-const GameStats = ({startTime, setStartTime, now, setNow, intervalRef}) => {
-    
+import characters from "./characters";
+const GameStats = ({ startTime, now }) => {
 
-
-
-
+    const characterArr = [...characters];
     let secondsPassed = 0;
-    if(startTime != null && now != null){
+    if (startTime != null && now != null) {
         secondsPassed = (now - startTime) / 1000;
     }
 
@@ -18,7 +15,11 @@ const GameStats = ({startTime, setStartTime, now, setNow, intervalRef}) => {
             </div>
             <div>
                 <span>Characters Remaining: </span>
-                <span></span>
+                <span>
+                    <ul>
+                        {characterArr.map(character => { return <li key={character.id}>{character.name}</li> })}
+                    </ul>
+                </span>
             </div>
         </div>
     )

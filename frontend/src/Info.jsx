@@ -6,20 +6,20 @@ const Info = ({ setShowInfo, timerStarted, setTimerStarted, handleTimerStart }) 
 
     const beginRound = async () => {
         setLoading(true);
-        if(!timerStarted){
+        if (!timerStarted) {
 
-            await fetch(`${import.meta.env.VITE_URL}/api/start`, {mode: "cors"})
-            .then(response => {
-                if(response.status >= 400){ throw new Error("Errored")}
-                setTimerStarted(true);
-                handleTimerStart();
-                setShowInfo(false);
-                return response.json();
-            })
-            .then(data => console.log(data))
-            .catch(error => setError(error))
-            .finally(()=>setLoading(false))
-        }else{
+            await fetch(`${import.meta.env.VITE_URL}/api/start`, { mode: "cors" })
+                .then(response => {
+                    if (response.status >= 400) { throw new Error("Errored") }
+                    setTimerStarted(true);
+                    handleTimerStart();
+                    setShowInfo(false);
+                    return response.json();
+                })
+                .then(data => console.log(data))
+                .catch(error => setError(error))
+                .finally(() => setLoading(false))
+        } else {
             setLoading(false);
             setShowInfo(false);
         }
@@ -45,16 +45,20 @@ const Info = ({ setShowInfo, timerStarted, setTimerStarted, handleTimerStart }) 
         // Fetch high scores from the server
     }, []);
 
-    if(error){return (
-        <div>
-            <h1>An error occurred.</h1>
-        </div>
-    )}
-    if(loading){return (
-        <div>
-            <h1>Loading...</h1>
-        </div>
-    )}
+    if (error) {
+        return (
+            <div>
+                <h1>An error occurred.</h1>
+            </div>
+        )
+    }
+    if (loading) {
+        return (
+            <div>
+                <h1>Loading...</h1>
+            </div>
+        )
+    }
     return (
         <div>
             <div id="rules">
@@ -76,7 +80,7 @@ const Info = ({ setShowInfo, timerStarted, setTimerStarted, handleTimerStart }) 
             </div>
             {
                 !timerStarted ? <button onClick={beginRound}>Begin</button>
-                : <button onClick={hideInfo}>Close</button>
+                    : <button onClick={hideInfo}>Close</button>
             }
 
         </div>
