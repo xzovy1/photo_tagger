@@ -1,7 +1,7 @@
 import { useState } from "react";
 import characters from "./characters.js"
 
-const CharacterSelect = ({ setImageClicked, selectedLocation, cancelLocation, imageDimensions }) => {
+const CharacterSelect = ({ setImageClicked, selectedLocation, cancelLocation, imageDimensions, ref, characterRef }) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     async function submit(e) {
@@ -18,10 +18,15 @@ const CharacterSelect = ({ setImageClicked, selectedLocation, cancelLocation, im
                 body: formData
             })
             .then(response => {
-                if (response.status >= 400) { throw new Error("Error occurred") }
+                if (response.status >= 400) { setError("Errored") };
                 return response.json();
             })
-            .then(data => console.log(data))
+            .then(data => {
+                console.log(data)
+                if (data.remaining.length > 0) {
+                    characterRef.current = [...data.remaining]
+                }
+            })
             .catch(error => setError(error))
             .finally(() => setLoading(false))
         setImageClicked(false)

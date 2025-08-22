@@ -45,6 +45,10 @@ app.post("/api/complete", (req, res) => {
   }
 });
 
+app.get("/api/remaining", (req, res) => {
+  return res.json({ remaining })
+})
+
 // validate character name and location
 app.post("/api/validate", upload.none(), (req, res) => {
   const { x, y, width, height, characterName } = req.body;
@@ -71,13 +75,13 @@ app.post("/api/validate", upload.none(), (req, res) => {
       if (character.name === characterName) {
         character.located = true;
       } else {
-        results.push(character.name);
+        results.push({ name: character.name, id: character.id });
       }
       return results;
     }, []);
     return res.json({
       message: `${selected.name} found!`,
-      remaining: `${JSON.stringify(remaining)}`,
+      remaining,
     });
   } else {
     console.log(`${selected.name} is not there`);

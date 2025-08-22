@@ -1,12 +1,11 @@
-import characters from "./characters";
-const GameStats = ({ startTime, now }) => {
 
-    const characterArr = [...characters];
+const GameStats = ({ startTime, now, characterRef }) => {
+
     let secondsPassed = 0;
     if (startTime != null && now != null) {
         secondsPassed = (now - startTime) / 1000;
     }
-
+    console.log(characterRef.current)
     return (
         <div>
             <div>
@@ -17,7 +16,7 @@ const GameStats = ({ startTime, now }) => {
                 <span>Characters Remaining: </span>
                 <span>
                     <ul>
-                        {characterArr.map(character => { return <li key={character.id}>{character.name}</li> })}
+                        {characterRef.current.map((character, index) => { return <li key={character.id}>{character.name}</li> })}
                     </ul>
                 </span>
             </div>

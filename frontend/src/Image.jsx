@@ -24,7 +24,6 @@ const Image = ({ imageClicked, setImageClicked, setLocation, magnified, locators
         newDiv.style.left = `${x - (locatorSize / 2)}px`;
         newDiv.style.width = `${locatorSize}px`
         newDiv.style.height = `${locatorSize}px`
-        newDiv.style.position = "absolute";
         parent.appendChild(newDiv)
     }
     useEffect(() => {
