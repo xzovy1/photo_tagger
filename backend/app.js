@@ -17,16 +17,13 @@ let roundInProgress = false;
 let remaining = characters.map((character) => character.name);
 remaining = [];
 
-app.get("/api/highscores", async (req, res) => {
+app.get("/api/scoreboard", async (req, res) => {
   const highScores = await prisma.score.findMany({
     orderBy: {
       score: 'desc'
     },
     take: 5
   });
-  if (highScores.length == 0) {
-    return res.json({ message: "No scores found" })
-  }
   return res.json({ highScores })
 })
 
