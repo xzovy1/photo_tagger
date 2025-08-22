@@ -2,6 +2,7 @@ import express from "express";
 import "dotenv/config";
 import cors from "cors";
 import multer from "multer";
+import prisma from "./prisma/client.js";
 import characters from "./characterLocations.js";
 const app = express();
 app.use(cors());
@@ -15,6 +16,19 @@ let start;
 let roundInProgress = false;
 let remaining = characters.map((character) => character.name);
 remaining = [];
+
+app.get("/api/highscores", async (req, res) => {
+  const highScores = await prisma.score.findMany({
+    orderBy: {
+      score: 'desc'
+    },
+    take: 5
+  });
+  if (highScores.length == 0) {
+    return res.json({ message: "No scores found" })
+  }
+  return res.json({ highScores })
+})
 
 app.get("/api/start", (req, res) => {
   if (!roundInProgress) {

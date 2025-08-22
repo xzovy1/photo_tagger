@@ -5,7 +5,7 @@ const GameStats = ({ startTime, now, characterRef }) => {
     if (startTime != null && now != null) {
         secondsPassed = (now - startTime) / 1000;
     }
-    console.log(characterRef.current)
+
     return (
         <div>
             <div>
