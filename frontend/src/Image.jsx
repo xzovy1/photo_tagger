@@ -2,65 +2,61 @@ import wheresWaldo from "./assets/1_7v_75ZGg1CTmWAw1rEgMHQ.webp";
 import useMousePosition from "./hooks/useMousePosition";
 import { useState, useEffect, useRef } from "react";
 
-const Image = ({imageClicked, setImageClicked, setLocation, magnified, ref, showInfo}) => {
-    const [imagePosition, setImagePosition] = useState({left: null, right: null, top: null, bottom: null});
-    const imageRef = useRef(null);
-    
-
+const Image = ({imageClicked, setImageClicked, setLocation, magnified, locatorsRef, imageRef, showInfo, imageDimensions, setImageDimensions}) => {
+    const mousePosition = useMousePosition();
     const handleCharacterSelect = () => {
         setImageClicked(!imageClicked);
+        setImageDimensions(imageRef.current.getBoundingClientRect())
+        const newImage = imageRef.current.getBoundingClientRect();
         if(
-            (mousePosition.x >= imagePosition.left && mousePosition.x <= imagePosition.right) &&
-            (mousePosition.y >= imagePosition.top && mousePosition.y <= imagePosition.bottom)
+            (mousePosition.x >= newImage.left && mousePosition.x <= newImage.right) &&
+            (mousePosition.y >= newImage.top && mousePosition.y <= newImage.bottom)
         ){
-            setLocation({x: Math.floor(mousePosition.x - imagePosition.left),  y: Math.floor(mousePosition.y - imagePosition.top)})
+            setLocation({x: mousePosition.x - newImage.left,  y: mousePosition.y - newImage.top})
         }
     }
-    const addLocator = (x, y) => {
-        const parent = ref.current
+    const addLocator = (x = mousePosition.x, y = mousePosition.y) => {
+        const parent = locatorsRef.current
         const newDiv = document.createElement("div");
         newDiv.classList.add("locator");
         newDiv.style.position = "absolute";
-        const size = 30
-        newDiv.style.top = `${y - (size/2)}px`;
-        newDiv.style.left = `${x - (size /2)}px`;
-        newDiv.style.width = `${size }px`
-        newDiv.style.height = `${size }px`
+        const locatorSize = 20
+        newDiv.style.top = `${y - (locatorSize/2)}px`;
+        newDiv.style.left = `${x - (locatorSize /2)}px`;
+        newDiv.style.width = `${locatorSize }px`
+        newDiv.style.height = `${locatorSize }px`
         parent.appendChild(newDiv)
     }
     useEffect(()=>{
         const image = imageRef.current
-        setImagePosition(image.getBoundingClientRect())
+        setImageDimensions(image.getBoundingClientRect())
     },[magnified])
 
-    const mousePosition = useMousePosition();
+    
     let transform = `translateX(${mousePosition.x }px) translateY(${mousePosition.y }px)`;;
     //original image dimensions : 2828 * 1828
     // find a calculated value for the -27 on x and y for varying image sizes
-    let magnifyX = -(mousePosition.x - imagePosition.left - 27 ) * (2828 / imagePosition.width);
-    let magnifyY = -(mousePosition.y - imagePosition.top - 27) *  (1828 / imagePosition.height);
+    let magnifyX = -(mousePosition.x - imageDimensions.left - 27 ) * (2828 / imageDimensions.width);
+    let magnifyY = -(mousePosition.y - imageDimensions.top - 27) *  (1828 / imageDimensions.height);
     let backgroundPosition = `${magnifyX}px ${magnifyY}px`;
     return (
         <>
-        {
-            magnified ? 
-            <div id="magnifier" style={{
-                transform, 
-                backgroundImage: `url(${wheresWaldo})`, 
-                backgroundPosition,
-                backgroundRepeat: "no-repeat",
-                top: 0,
-                left: 0
-            }}></div>  
-            : null   
-        }
-        <div id="locators"></div>
-        <div ref={ref} onClick={()=>{
-            handleCharacterSelect();
-            addLocator(mousePosition.x, mousePosition.y);
-        }}>
-        <img src={wheresWaldo} alt="waldo" className="image" id="image" ref={imageRef}/> 
-        </div>
+            {
+                magnified ? 
+                <div id="magnifier" style={{
+                    transform, 
+                    backgroundImage: `url(${wheresWaldo})`, 
+                    backgroundPosition,
+                    backgroundRepeat: "no-repeat",
+                    top: 0,
+                    left: 0
+                }}></div>  
+                : null   
+            }
+            <div id="locators"></div>
+            <div ref={locatorsRef} onClick={()=>{addLocator(); handleCharacterSelect();}}>
+                <img src={wheresWaldo} alt="waldo" className="image" id="image" ref={imageRef}/> 
+            </div>
         </>
     )
 }

@@ -1,13 +1,18 @@
 import express from "express";
 import "dotenv/config";
 import cors from "cors";
+import multer from "multer";
+import { characters } from "./characterLocations.js";
 const app = express();
-
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
+
+//using multer instead of setting content-type to x-www-form-urlencoded in fetch
+//https://stackoverflow.com/questions/37630419/how-to-handle-formdata-from-express-4
+const upload = multer();
+
 let start, elapsedTime;
 let roundInProgress = false;
-
 app.get("/api/start", (req, res) => {
   if (!roundInProgress) {
     start = new Date().toTimeString();
@@ -31,16 +36,34 @@ app.post("/api/submitScore", (req, res) => {
   });
 });
 
-app.post("/api/validateCoordinates", (req, res) => {
-  const { x, y, imageWidth, imageHeight } = req.body;
-  const xRatio = x / imageWidth;
-  const yRatio = y / imageHeight;
-  // Validate coordinates (dummy validation for example)
-  //
-  if (x < 0 || y < 0) {
+// validate character name and location
+app.post("/api/validate", upload.none(), (req, res) => {
+  const { x, y, width, height, character } = req.body;
+
+  function round(value1, value2) {
+    let number = (parseFloat(value1) / parseFloat(value2)) * 100;
+    return Math.floor(number);
+    // return Math.round(number * 10) / 10;
+  }
+  const xRatio = round(x, width);
+  const yRatio = round(y, height);
+  const selected = characters.find((char) => {
+    if (char.name === character) {
+      return char;
+    }
+  });
+  if (x < 0 || y < 0 || Number.isNaN(xRatio) || Number.isNaN(yRatio)) {
     return res.status(400).json({ message: "Invalid coordinates" });
   }
-  res.json({ message: "Coordinates are valid" });
+  if (selected.x == xRatio && selected.y == yRatio) {
+    console.log(`${selected.name} found`);
+    return res.json({
+      message: `${selected.name} found!`,
+    });
+  } else {
+    console.log(`${selected.name} is not there`);
+    return res.json({ message: `${selected.name} is not there` });
+  }
 });
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
