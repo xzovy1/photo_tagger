@@ -1,17 +1,18 @@
 import { useEffect, useState } from "react";
 
-const Info = ({ setShowInfo, timerStarted, setTimerStarted }) => {
+const Info = ({ setShowInfo, timerStarted, setTimerStarted, handleTimerStart }) => {
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
-    
-    const hideInfo = async () => {
+
+    const beginRound = async () => {
         setLoading(true);
         if(!timerStarted){
 
             await fetch(`${import.meta.env.VITE_URL}/api/start`, {mode: "cors"})
             .then(response => {
                 if(response.status >= 400){ throw new Error("Errored")}
-                setTimerStarted(true); 
+                setTimerStarted(true);
+                handleTimerStart();
                 setShowInfo(false);
                 return response.json();
             })
@@ -22,6 +23,9 @@ const Info = ({ setShowInfo, timerStarted, setTimerStarted }) => {
             setLoading(false);
             setShowInfo(false);
         }
+    }
+    const hideInfo = () => {
+        setShowInfo(false);
     }
     const rules = [
         "See if you can find Waldo, Wenda, Odlaw, Wizard Whitebeard and Woof!",
@@ -70,7 +74,10 @@ const Info = ({ setShowInfo, timerStarted, setTimerStarted }) => {
                     })}
                 </ol>
             </div>
-            <button onClick={hideInfo}>{timerStarted ? "Close" : "Begin"}</button>
+            {
+                !timerStarted ? <button onClick={beginRound}>Begin</button>
+                : <button onClick={hideInfo}>Close</button>
+            }
 
         </div>
     )

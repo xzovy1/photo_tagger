@@ -20,9 +20,15 @@ app.get("/api/start", (req, res) => {
   if (!roundInProgress) {
     start = new Date();
     roundInProgress = true;
-    res.json({ message: `Timer started at ${start.toLocaleTimeString()}` });
+    res.json({
+      message: `Timer started at ${start.toLocaleTimeString()}`,
+      roundInProgress,
+    });
   } else {
-    res.json({ message: "Unable to start timer with round in progress" });
+    res.json({
+      message: "Unable to start timer with round in progress",
+      roundInProgress,
+    });
   }
 });
 

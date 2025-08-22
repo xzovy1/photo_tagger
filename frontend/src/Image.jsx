@@ -20,10 +20,10 @@ const Image = ({imageClicked, setImageClicked, setLocation, magnified, locatorsR
         const newDiv = document.createElement("div");
         newDiv.classList.add("locator");
         const locatorSize = 20
-        newDiv.style.top = `${y - (locatorSize / 2)}px`;
-        newDiv.style.left = `${x - (locatorSize / 2)}px`;
-        newDiv.style.width = `${locatorSize }px`
-        newDiv.style.height = `${locatorSize }px`
+        newDiv.style.top = `${y - (locatorSize / 2)} px`;
+        newDiv.style.left = `${x - (locatorSize / 2)} px`;
+        newDiv.style.width = `${locatorSize} px`
+        newDiv.style.height = `${locatorSize} px`
         parent.appendChild(newDiv)
     }
     useEffect(()=>{
@@ -40,6 +40,7 @@ const Image = ({imageClicked, setImageClicked, setLocation, magnified, locatorsR
     let magnifyX = -(mousePosition.x - imageDimensions.left - xAdjust ) * (2828 / imageDimensions.width);
     let magnifyY = -(mousePosition.y - imageDimensions.top - yAdjust) *  (1828 / imageDimensions.height);
     let backgroundPosition = `${magnifyX}px ${magnifyY}px`;
+
     return (
         <>
             {
