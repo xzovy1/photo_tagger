@@ -32,21 +32,6 @@
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
 .card {
   padding: 2em;
 }
@@ -102,12 +87,30 @@
   z-index: 1;
   border:1px solid black;
   position: absolute;
-  width: 175px;
-  height: 175px;
+  width: 130px;
+  height: 130px;
+  padding: 20px;
   border-radius: 50%;
 }
 
 .locator {
   border: 3px solid red;
+  position: absolute;
 }
 
+
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}

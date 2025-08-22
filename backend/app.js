@@ -11,29 +11,32 @@ app.use(express.urlencoded({ extended: true }));
 //https://stackoverflow.com/questions/37630419/how-to-handle-formdata-from-express-4
 const upload = multer();
 
-let start, elapsedTime;
+let start;
 let roundInProgress = false;
+let remaining = characters.map((character) => character.name);
+remaining = [];
+
 app.get("/api/start", (req, res) => {
   if (!roundInProgress) {
-    start = new Date().toTimeString();
+    start = new Date();
     roundInProgress = true;
-    res.json({ message: `Timer started at ${start}` });
+    res.json({ message: `Timer started at ${start.toLocaleTimeString()}` });
   } else {
     res.json({ message: "Unable to start timer with round in progress" });
   }
 });
 
-app.get("/api/stop", (req, res) => {
-  elapsedTime = new Date() - new Date(start);
-  res.json({ message: `Timer after ${elapsedTime} ms`, elapsedTime });
-});
-
-app.post("/api/submitScore", (req, res) => {
+app.post("/api/complete", (req, res) => {
   const { name } = req.body;
-  //post name and elapsed time to server
-  res.json({
-    message: `Score submitted for ${name} with time ${elapsedTime} ms`,
-  });
+  if (remaining.length == 0) {
+    let elapsedTime = (new Date() - start) / 1000;
+    return res.json({
+      message: `Score submitted for ${name} with time ${elapsedTime} ms`,
+      elapsedTime,
+    });
+  } else {
+    return res.json({ message: JSON.stringify(remaining) });
+  }
 });
 
 // validate character name and location
@@ -58,7 +61,7 @@ app.post("/api/validate", upload.none(), (req, res) => {
   }
   if (selected.x == xRatio && selected.y == yRatio) {
     console.log(`${selected.name} found`);
-    const remaining = characters.reduce((results, character) => {
+    remaining = characters.reduce((results, character) => {
       if (character.name === characterName) {
         character.located = true;
       } else {
@@ -66,7 +69,6 @@ app.post("/api/validate", upload.none(), (req, res) => {
       }
       return results;
     }, []);
-    console.log(remaining);
     return res.json({
       message: `${selected.name} found!`,
       remaining: `${JSON.stringify(remaining)}`,
@@ -76,6 +78,7 @@ app.post("/api/validate", upload.none(), (req, res) => {
     return res.json({ message: `${selected.name} is not there` });
   }
 });
+
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

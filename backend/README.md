@@ -13,6 +13,10 @@ handles:
 
 `/api/start`:
 submit start time to server
+`/api/validate`:
+confirms location and character is correct
+`/api/complete`:
+if no remaining characters to be found, send name and completion duration to server
 
 ## DB
 

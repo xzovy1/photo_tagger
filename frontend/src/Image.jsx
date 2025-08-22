@@ -19,10 +19,9 @@ const Image = ({imageClicked, setImageClicked, setLocation, magnified, locatorsR
         const parent = locatorsRef.current
         const newDiv = document.createElement("div");
         newDiv.classList.add("locator");
-        newDiv.style.position = "absolute";
         const locatorSize = 20
-        newDiv.style.top = `${y - (locatorSize/2)}px`;
-        newDiv.style.left = `${x - (locatorSize /2)}px`;
+        newDiv.style.top = `${y - (locatorSize / 2)}px`;
+        newDiv.style.left = `${x - (locatorSize / 2)}px`;
         newDiv.style.width = `${locatorSize }px`
         newDiv.style.height = `${locatorSize }px`
         parent.appendChild(newDiv)
@@ -35,9 +34,11 @@ const Image = ({imageClicked, setImageClicked, setLocation, magnified, locatorsR
     
     let transform = `translateX(${mousePosition.x }px) translateY(${mousePosition.y }px)`;;
     //original image dimensions : 2828 * 1828
-    // find a calculated value for the -27 on x and y for varying image sizes
-    let magnifyX = -(mousePosition.x - imageDimensions.left - 27 ) * (2828 / imageDimensions.width);
-    let magnifyY = -(mousePosition.y - imageDimensions.top - 27) *  (1828 / imageDimensions.height);
+    // find a calculated value for the -33 on x and y for varying image sizes
+    let xAdjust = (imageDimensions.width/2828) + 30
+    let yAdjust = (imageDimensions.height/1828) + 30
+    let magnifyX = -(mousePosition.x - imageDimensions.left - xAdjust ) * (2828 / imageDimensions.width);
+    let magnifyY = -(mousePosition.y - imageDimensions.top - yAdjust) *  (1828 / imageDimensions.height);
     let backgroundPosition = `${magnifyX}px ${magnifyY}px`;
     return (
         <>
@@ -53,8 +54,8 @@ const Image = ({imageClicked, setImageClicked, setLocation, magnified, locatorsR
                 }}></div>  
                 : null   
             }
-            <div id="locators"></div>
             <div ref={locatorsRef} onClick={()=>{addLocator(); handleCharacterSelect();}}>
+                <div id="locators"></div>
                 <img src={wheresWaldo} alt="waldo" className="image" id="image" ref={imageRef}/> 
             </div>
         </>
