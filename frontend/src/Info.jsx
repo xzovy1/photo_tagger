@@ -1,8 +1,17 @@
 import { useEffect, useState } from "react";
 
+const dummyScores = [
+    "No Score found",
+    "No Score found",
+    "No Score found",
+    "No Score found",
+    "No Score found",
+];
+
 const Info = ({ setShowInfo, timerStarted, setTimerStarted, handleTimerStart }) => {
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [scoreboard, setScoreboard] = useState(dummyScores)
 
     const beginRound = async () => {
         setLoading(true);
@@ -34,15 +43,21 @@ const Info = ({ setShowInfo, timerStarted, setTimerStarted, handleTimerStart }) 
         "You will be timed based on how quickly all the characters are found.",
         "Click 'Show Magnifier' to toggle the magnifier on and off.",
     ];
-    const dummyScores = [
-        "No Score found",
-        "No Score found",
-        "No Score found",
-        "No Score found",
-        "No Score found",
-    ];
+
     useEffect(() => {
-        // Fetch high scores from the server
+        fetch(`${import.meta.env.VITE_URL}/api/scoreboard`,
+            { mode: "cors" })
+            .then(response => {
+                if (response.status >= 400) { return setError("Errored") };
+                return response.json();
+            })
+            .then(data => {
+                console.log(data)
+
+                setScoreboard(data.highScores)
+            })
+            .catch(error => setError(error))
+            .finally(() => setLoading(false))
     }, []);
 
     if (error) {
@@ -73,7 +88,7 @@ const Info = ({ setShowInfo, timerStarted, setTimerStarted, handleTimerStart }) 
             <div id="scoreboard">
                 <h2>High Scores</h2>
                 <ol>
-                    {dummyScores.map((score, index) => {
+                    {scoreboard.map((score, index) => {
                         return <li key={index}><em>{score}</em></li>
                     })}
                 </ol>
