@@ -1,17 +1,30 @@
 import { useEffect, useState } from "react";
-
-const dummyScores = [
-    "No Score found",
-    "No Score found",
-    "No Score found",
-    "No Score found",
-    "No Score found",
-];
+const dummyScore = { name: "No Score Found" }
+const dummyScores = [dummyScore, dummyScore, dummyScore, dummyScore, dummyScore]
 
 const Info = ({ setShowInfo, timerStarted, setTimerStarted, handleTimerStart }) => {
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
     const [scoreboard, setScoreboard] = useState(dummyScores)
+
+    useEffect(() => {
+        fetch(`${import.meta.env.VITE_URL}/api/scoreboard`,
+            { mode: "cors" })
+            .then(response => {
+                if (response.status >= 400) { return setError("Errored") };
+                return response.json();
+            })
+            .then(data => {
+                console.log(data)
+                while (data.highScores.length < 5) {
+                    data.highScores.push(dummyScore)
+                }
+                console.log(data.highScores)
+                setScoreboard(data.highScores)
+            })
+            .catch(error => setError(error))
+            .finally(() => setLoading(false))
+    }, []);
 
     const beginRound = async () => {
         setLoading(true);
@@ -44,21 +57,7 @@ const Info = ({ setShowInfo, timerStarted, setTimerStarted, handleTimerStart }) 
         "Click 'Show Magnifier' to toggle the magnifier on and off.",
     ];
 
-    useEffect(() => {
-        fetch(`${import.meta.env.VITE_URL}/api/scoreboard`,
-            { mode: "cors" })
-            .then(response => {
-                if (response.status >= 400) { return setError("Errored") };
-                return response.json();
-            })
-            .then(data => {
-                console.log(data)
 
-                setScoreboard(data.highScores)
-            })
-            .catch(error => setError(error))
-            .finally(() => setLoading(false))
-    }, []);
 
     if (error) {
         return (
@@ -88,8 +87,13 @@ const Info = ({ setShowInfo, timerStarted, setTimerStarted, handleTimerStart }) 
             <div id="scoreboard">
                 <h2>High Scores</h2>
                 <ol>
-                    {scoreboard.map((score, index) => {
-                        return <li key={index}><em>{score}</em></li>
+                    {scoreboard.map((entry, index) => {
+                        return (
+                            <li key={index}>
+                                <span>{entry.name} </span>
+                                <span>{entry.score}</span>
+                            </li>
+                        )
                     })}
                 </ol>
             </div>

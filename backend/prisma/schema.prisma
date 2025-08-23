@@ -17,5 +17,5 @@ datasource db {
 model ScoreBoard {
   id    String @unique @default(uuid()) @db.Uuid()
   name  String
-  score Int
+  score Decimal
 }

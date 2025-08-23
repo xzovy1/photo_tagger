@@ -4,7 +4,13 @@ import { PrismaClient } from './generated/prisma/index.js'
 
 const prisma = new PrismaClient()
 async function main() {
-    const script = await prisma.score.findMany();
+    const script = await prisma.scoreBoard.create({
+        data: {
+            name: "cS",
+            score: 77.23
+        }
+    });
+    // const script = await prisma.scoreBoard.deleteMany()
     console.log(script);
 }
 

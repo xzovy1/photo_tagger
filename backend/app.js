@@ -18,9 +18,9 @@ let remaining = characters.map((character) => character.name);
 remaining = [];
 
 app.get("/api/scoreboard", async (req, res) => {
-  const highScores = await prisma.score.findMany({
+  const highScores = await prisma.scoreBoard.findMany({
     orderBy: {
-      score: 'desc'
+      score: 'asc'
     },
     take: 5
   });
