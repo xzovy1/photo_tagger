@@ -1,7 +1,7 @@
 import { useState } from "react";
 import characters from "./characters.js"
 
-const CharacterSelect = ({ setImageClicked, selectedLocation, cancelLocation, imageDimensions, locatorsRef, characterRef }) => {
+const CharacterSelect = ({ setImageClicked, selectedLocation, cancelLocation, imageDimensions, locatorsRef, characterRef, setComplete }) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
@@ -20,23 +20,31 @@ const CharacterSelect = ({ setImageClicked, selectedLocation, cancelLocation, im
                 body: formData
             })
             .then(response => {
+                console.log(response.status)
                 if (response.status >= 400) { setError("Errored") };
                 return response.json();
             })
             .then(data => {
-                console.log(data)
                 const locators = locatorsRef.current
-                locators.children[locators.children.length - 1].classList.add("located");
-                if (data.remaining.length > 0) {
-                    characterRef.current = [...data.remaining]
+                if (data.valid) {
+                    locators.children[locators.children.length - 1].classList.add("located");
+                    setImageClicked(false)
+                } else {
+                    setError("Location incorrect!")
                 }
-                setImageClicked(false)
+                if (data.remaining) {
+                    characterRef.current = [...data.remaining]
+                    if (data.remaining.length == 0) {
+                        setComplete(true);
+                    }
+                }
+
             })
-            .catch(error => setError(error))
+            .catch(error => { setError(error); console.log(error) })
             .finally(() => setLoading(false))
     }
     return (
-        <div id="modal">
+        <div class="modal">
             <button onClick={cancelLocation}>Cancel Selection</button>
             <form onSubmit={submit} className="characterForm">
                 <div className="characters">
@@ -53,7 +61,7 @@ const CharacterSelect = ({ setImageClicked, selectedLocation, cancelLocation, im
                 </div>
                 <button>Choose</button>
             </form>
-            {error ? <div style={{ color: 'red' }}>an error occurred</div> : null}
+            {error ? <div style={{ color: 'red' }}>{error}</div> : null}
         </div>
     )
 }

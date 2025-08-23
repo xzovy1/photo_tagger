@@ -55,7 +55,6 @@ app.post("/api/complete", upload.none(), async (req, res) => {
         score: elapsedTime
       }
     })
-    remaining = ['']
     return res.json({
       message: `Score submitted for ${name} with time ${elapsedTime} ms`,
       elapsedTime,
@@ -92,6 +91,7 @@ app.post("/api/validate", upload.none(), (req, res) => {
     return res.status(400).json({ message: "Invalid coordinates" });
   }
   if (Math.abs(selected.x - xRatio) <= 1 && Math.abs(selected.y - yRatio) <= 1) {
+    console.log((Math.abs(selected.x - xRatio)), Math.abs(selected.y - yRatio))
     console.log(`${selected.name} found`);
     remaining = characters.reduce((results, character) => {
       if (character.name === characterName) {

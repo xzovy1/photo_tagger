@@ -2,11 +2,11 @@ import { useState, useRef, useEffect } from 'react'
 import './App.css'
 import Image from './Image.jsx'
 import CharacterSelect from './CharacterSelect.jsx'
-import wallyLogo from "./assets/wheres-wally-logo.jpg"
 import wallyWave from "./assets/waldo-wave.jpg"
 import Info from './Info.jsx'
-import GameStats from './GameStats.jsx'
 import characters from './characters.js'
+import Header from './Header.jsx'
+import Complete from './Complete.jsx'
 
 function App() {
   const [showInfo, setShowInfo] = useState(true);
@@ -15,6 +15,7 @@ function App() {
   const [selectedLocation, setLocation] = useState({ x: null, y: null });
   const [imageDimensions, setImageDimensions] = useState({ left: null, right: null, top: null, bottom: null });
   const [magnified, setMagnified] = useState(false);
+  const [complete, setComplete] = useState(false)
   const [startTime, setStartTime] = useState(null);
   const [now, setNow] = useState(null);
 
@@ -32,9 +33,7 @@ function App() {
       setNow(Date.now());
     }, 10);
   }
-  function handleStop() {
-    clearInterval(intervalRef.current)
-  }
+
 
   useEffect(() => {
     const handleResize = () => {
@@ -55,10 +54,7 @@ function App() {
       }).catch(err => console.err(err))
   }, [])
 
-  const handleMagnifier = (e) => {
-    setMagnified(!magnified);
-    e.target.blur();
-  }
+
   const cancelLocation = () => {
     setLocation({ x: null, y: null });
     const locators = locatorsRef.current
@@ -66,24 +62,26 @@ function App() {
     setImageClicked(false)
   }
 
+
   return (
     <>
-      <div className='header'>
-        <img src={wallyLogo} alt="" className='logo' onClick={() => setShowInfo(!showInfo)} />
-        <h1>Where's Waldo?</h1>
-        {
-          !showInfo ? <button onClick={handleMagnifier}>{!magnified ? "Show Magnifier" : "Hide Magnifier"}</button>
-            : <GameStats startTime={startTime} setStartTime={setStartTime} setNow={setNow} now={now} intervalRef={intervalRef} characterRef={characterRef} />
-        }
-      </div>
-      {imageClicked ? <CharacterSelect selectedLocation={selectedLocation} setImageClicked={setImageClicked} cancelLocation={cancelLocation} locatorsRef={locatorsRef} imageDimensions={imageDimensions} characterRef={characterRef} /> : null}
+      <Header
+        timerStarted={timerStarted}
+        startTime={startTime}
+        setShowInfo={setShowInfo} showInfo={showInfo} characterRef={characterRef} setStartTime={setStartTime} now={now} setNow={setNow} magnified={magnified} setMagnified={setMagnified} />
+
+      {imageClicked ?
+        <CharacterSelect selectedLocation={selectedLocation} setImageClicked={setImageClicked} cancelLocation={cancelLocation} setComplete={setComplete} locatorsRef={locatorsRef} imageDimensions={imageDimensions} characterRef={characterRef} />
+        : null
+      }
       {showInfo ?
         <>
           <Info setShowInfo={setShowInfo} timerStarted={timerStarted} setTimerStarted={setTimerStarted} handleTimerStart={handleTimerStart} />
           <img src={wallyWave} alt="" id='wallywave' />
-        </> :
-        <Image imageClicked={imageClicked} setImageClicked={setImageClicked} selectedLocation={selectedLocation} setLocation={setLocation} magnified={magnified} locatorsRef={locatorsRef} imageRef={imageRef} showInfo={showInfo} imageDimensions={imageDimensions} setImageDimensions={setImageDimensions} />
+        </>
+        : <Image imageClicked={imageClicked} setImageClicked={setImageClicked} selectedLocation={selectedLocation} setLocation={setLocation} magnified={magnified} locatorsRef={locatorsRef} imageRef={imageRef} showInfo={showInfo} imageDimensions={imageDimensions} setImageDimensions={setImageDimensions} />
       }
+      {complete ? <Complete setComplete={setComplete} intervalRef={intervalRef} /> : null}
     </>
   )
 }

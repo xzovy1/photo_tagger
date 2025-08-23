@@ -48,14 +48,20 @@
   z-index: 1;
 }
 
-#modal {
-  background-color: rgb(231, 231, 231);
+.modal {
+  background-color: rgb(255, 255, 255);
   position: absolute;
   z-index: 1000;
   left: 5%;
   width: 250px;
   border-radius: 5px;
   padding: 8px;
+}
+
+.completed {
+  top: 50%;
+  left: 40%;
+  padding: 1rem;
 }
 
 .characterOption {

@@ -15,11 +15,9 @@ const Info = ({ setShowInfo, timerStarted, setTimerStarted, handleTimerStart }) 
                 return response.json();
             })
             .then(data => {
-                console.log(data)
                 while (data.highScores.length < 5) {
                     data.highScores.push(dummyScore)
                 }
-                console.log(data.highScores)
                 setScoreboard(data.highScores)
             })
             .catch(error => setError(error))

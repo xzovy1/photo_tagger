@@ -26,6 +26,13 @@ const Image = ({ imageClicked, setImageClicked, setLocation, magnified, locators
         newDiv.style.height = `${locatorSize}px`
         parent.appendChild(newDiv)
     }
+
+    const makeSelection = () => {
+        if (!imageClicked) {
+            addLocator();
+        }
+        handleCharacterSelect();
+    }
     useEffect(() => {
         const image = imageRef.current
         setImageDimensions(image.getBoundingClientRect())
@@ -55,7 +62,7 @@ const Image = ({ imageClicked, setImageClicked, setLocation, magnified, locators
                     }}></div>
                     : null
             }
-            <div ref={locatorsRef} onClick={() => { addLocator(); handleCharacterSelect(); }}>
+            <div ref={locatorsRef} onClick={makeSelection}>
                 <div id="locators"></div>
                 <img src={wheresWaldo} alt="waldo" className="image" id="image" ref={imageRef} />
             </div>
