@@ -51,7 +51,7 @@ function App() {
         if (data.remaining.length > 0) {
           characterRef.current = [...data.remaining]
         }
-      }).catch(err => console.err(err))
+      }).catch(err => console.error(err))
   }, [])
 
 
@@ -81,7 +81,7 @@ function App() {
         </>
         : <Image imageClicked={imageClicked} setImageClicked={setImageClicked} selectedLocation={selectedLocation} setLocation={setLocation} magnified={magnified} locatorsRef={locatorsRef} imageRef={imageRef} showInfo={showInfo} imageDimensions={imageDimensions} setImageDimensions={setImageDimensions} />
       }
-      {complete ? <Complete setComplete={setComplete} intervalRef={intervalRef} /> : null}
+      {complete ? <Complete setComplete={setComplete} intervalRef={intervalRef} setShowInfo={setShowInfo} setTimerStarted={setTimerStarted} setNow={setNow} setStartTime={setStartTime}/> : null}
     </>
   )
 }

@@ -31,6 +31,7 @@ const CharacterSelect = ({ setImageClicked, selectedLocation, cancelLocation, im
                     setImageClicked(false)
                 } else {
                     setError("Location incorrect!")
+                    locators.children[locators.children.length - 1].remove();
                 }
                 if (data.remaining) {
                     characterRef.current = [...data.remaining]
@@ -44,7 +45,7 @@ const CharacterSelect = ({ setImageClicked, selectedLocation, cancelLocation, im
             .finally(() => setLoading(false))
     }
     return (
-        <div class="modal">
+        <div className="modal">
             <button onClick={cancelLocation}>Cancel Selection</button>
             <form onSubmit={submit} className="characterForm">
                 <div className="characters">
