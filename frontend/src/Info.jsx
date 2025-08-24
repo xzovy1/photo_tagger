@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 const dummyScore = { name: "No Score Found" }
 const dummyScores = [dummyScore, dummyScore, dummyScore, dummyScore, dummyScore]
 
-const Info = ({ setShowInfo, timerStarted, setTimerStarted, handleTimerStart }) => {
+const Info = ({ setShowInfo, timer, setTimer, handleTimerStart }) => {
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
     const [scoreboard, setScoreboard] = useState(dummyScores)
@@ -26,13 +26,17 @@ const Info = ({ setShowInfo, timerStarted, setTimerStarted, handleTimerStart }) 
 
     const beginRound = async () => {
         setLoading(true);
-        if (!timerStarted) {
+        if (!timer.started) {
 
             await fetch(`${import.meta.env.VITE_URL}/api/start`, { mode: "cors" })
                 .then(response => {
                     if (response.status >= 400) { throw new Error("Errored") }
-                    setTimerStarted(true);
                     handleTimerStart();
+                    setTimer({
+                        ...timer,
+                        started: true,
+                        startTime: new Date(),
+                    })
                     setShowInfo(false);
                     return response.json();
                 })
@@ -96,7 +100,7 @@ const Info = ({ setShowInfo, timerStarted, setTimerStarted, handleTimerStart }) 
                 </ol>
             </div>
             {
-                !timerStarted ? <button onClick={beginRound}>Begin</button>
+                !timer.started ? <button onClick={beginRound}>Begin</button>
                     : <button onClick={hideInfo}>Close</button>
             }
 

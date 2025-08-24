@@ -3,7 +3,7 @@ import GameStats from "./GameStats";
 
 import { useState, useRef, useEffect } from "react";
 
-const Header = ({ timerStarted, startTime, setShowInfo, showInfo, characterRef, intervalRef, setStartTime, setNow, now, magnified, setMagnified }) => {
+const Header = ({ timer, setTimer, setShowInfo, showInfo, characterRef, intervalRef, magnified, setMagnified }) => {
 
     const handleMagnifier = (e) => {
         setMagnified(!magnified);
@@ -12,11 +12,11 @@ const Header = ({ timerStarted, startTime, setShowInfo, showInfo, characterRef, 
     return (
 
         <div className='header'>
-            <img src={wallyLogo} alt="" className='logo' onClick={() => { if (timerStarted) { setShowInfo(!showInfo) } }} />
+            <img src={wallyLogo} alt="" className='logo' onClick={() => { if (true) { setShowInfo(!showInfo) } }} />
             <h1>Where's Waldo?</h1>
             {
                 !showInfo ? <button onClick={handleMagnifier}>{!magnified ? "Show Magnifier" : "Hide Magnifier"}</button>
-                    : <GameStats startTime={startTime} setStartTime={setStartTime} setNow={setNow} now={now} intervalRef={intervalRef} characterRef={characterRef} />
+                    : <GameStats timer={timer} setTimer={setTimer} intervalRef={intervalRef} characterRef={characterRef} />
             }
         </div>
     )

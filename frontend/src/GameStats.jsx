@@ -1,9 +1,9 @@
 
-const GameStats = ({ startTime, now, characterRef }) => {
-
+const GameStats = ({ timer, characterRef }) => {
+    // console.log(characterRef.current)
     let secondsPassed = 0;
-    if (startTime != null && now != null) {
-        secondsPassed = (now - startTime) / 1000;
+    if (timer.startTime != null && timer.now != null) {
+        secondsPassed = (timer.now - timer.startTime) / 1000;
     }
 
     return (

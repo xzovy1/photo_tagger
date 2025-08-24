@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-const Complete = ({ setComplete, intervalRef }) => {
+const Complete = ({ setComplete, intervalRef, setShowInfo, setNow, setStartTime, setTimerStarted, characterRef }) => {
 
     function handleStop() {
         clearInterval(intervalRef.current)
@@ -14,9 +14,17 @@ const Complete = ({ setComplete, intervalRef }) => {
         await fetch(`${import.meta.env.VITE_URL}/api/complete`,
             { mode: "cors", method: "post", body: formData })
             .then(response => response.json())
-            .then(d => console.log(d))
+            .then(d => {
+                console.log(d)
+                characterRef.current = [...d.remaining];
+
+            })
         e.target.blur();
-        setComplete(false)
+        setComplete(false);
+        setShowInfo(true);
+        setNow(null)
+        setStartTime(null)
+        setTimerStarted(false)
     }
     useEffect(() => { handleStop(); }, [])
     return (

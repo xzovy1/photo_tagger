@@ -11,13 +11,18 @@ import Complete from './Complete.jsx'
 function App() {
   const [showInfo, setShowInfo] = useState(true);
   const [imageClicked, setImageClicked] = useState(false);
-  const [timerStarted, setTimerStarted] = useState(false);
+
   const [selectedLocation, setLocation] = useState({ x: null, y: null });
   const [imageDimensions, setImageDimensions] = useState({ left: null, right: null, top: null, bottom: null });
   const [magnified, setMagnified] = useState(false);
   const [complete, setComplete] = useState(false)
-  const [startTime, setStartTime] = useState(null);
-  const [now, setNow] = useState(null);
+
+  const [timer, setTimer] = useState({
+    started: false,
+    now: null,
+    startTime: null
+  })
+
 
   const intervalRef = useRef(null);
   const imageRef = useRef(null)
@@ -25,15 +30,18 @@ function App() {
   const characterRef = useRef([...characters])
 
   function handleTimerStart() {
-    setStartTime(Date.now());
-    setNow(Date.now());
-
+    const start = Date.now()
+    setTimer({
+      now: Date.now(),
+      startTime: start,
+      started: true,
+      ...timer,
+    })
     clearInterval(intervalRef.current);
     intervalRef.current = setInterval(() => {
-      setNow(Date.now());
+      setTimer({ now: Date.now(), startTime: start, started: true })
     }, 10);
   }
-
 
   useEffect(() => {
     const handleResize = () => {
@@ -49,11 +57,11 @@ function App() {
       .then(response => { return response.json() })
       .then(data => {
         if (data.remaining.length > 0) {
+          console.log(data.remaining)
           characterRef.current = [...data.remaining]
         }
-      }).catch(err => console.err(err))
+      }).catch(err => console.error(err))
   }, [])
-
 
   const cancelLocation = () => {
     setLocation({ x: null, y: null });
@@ -66,9 +74,8 @@ function App() {
   return (
     <>
       <Header
-        timerStarted={timerStarted}
-        startTime={startTime}
-        setShowInfo={setShowInfo} showInfo={showInfo} characterRef={characterRef} setStartTime={setStartTime} now={now} setNow={setNow} magnified={magnified} setMagnified={setMagnified} />
+        setTimer={setTimer} timer={timer}
+        setShowInfo={setShowInfo} showInfo={showInfo} characterRef={characterRef} magnified={magnified} setMagnified={setMagnified} />
 
       {imageClicked ?
         <CharacterSelect selectedLocation={selectedLocation} setImageClicked={setImageClicked} cancelLocation={cancelLocation} setComplete={setComplete} locatorsRef={locatorsRef} imageDimensions={imageDimensions} characterRef={characterRef} />
@@ -76,12 +83,12 @@ function App() {
       }
       {showInfo ?
         <>
-          <Info setShowInfo={setShowInfo} timerStarted={timerStarted} setTimerStarted={setTimerStarted} handleTimerStart={handleTimerStart} />
+          <Info setShowInfo={setShowInfo} timer={timer} setTimer={setTimer} handleTimerStart={handleTimerStart} />
           <img src={wallyWave} alt="" id='wallywave' />
         </>
         : <Image imageClicked={imageClicked} setImageClicked={setImageClicked} selectedLocation={selectedLocation} setLocation={setLocation} magnified={magnified} locatorsRef={locatorsRef} imageRef={imageRef} showInfo={showInfo} imageDimensions={imageDimensions} setImageDimensions={setImageDimensions} />
       }
-      {complete ? <Complete setComplete={setComplete} intervalRef={intervalRef} /> : null}
+      {complete ? <Complete setComplete={setComplete} intervalRef={intervalRef} setShowInfo={setShowInfo} timer={timer} setTimer={setTimer} characterRef={characterRef} /> : null}
     </>
   )
 }

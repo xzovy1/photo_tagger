@@ -13,10 +13,10 @@ app.use(express.urlencoded({ extended: true }));
 //https://stackoverflow.com/questions/37630419/how-to-handle-formdata-from-express-4
 const upload = multer();
 
-let start;
+let start = undefined;
 let roundInProgress = false;
-let remaining = characters.map((character) => character.name);
-remaining = [];
+let remaining = characters.map((character) => { return { name: character.name, located: character.located, id: character.id } });
+
 console.log(remaining)
 
 app.get("/api/scoreboard", async (req, res) => {
@@ -30,12 +30,15 @@ app.get("/api/scoreboard", async (req, res) => {
 })
 
 app.get("/api/start", (req, res) => {
+  roundInProgress = false;
+
   if (!roundInProgress) {
     start = new Date();
     roundInProgress = true;
     res.json({
       message: `Timer started at ${start.toLocaleTimeString()}`,
       roundInProgress,
+      remaining
     });
   } else {
     res.json({
@@ -49,6 +52,9 @@ app.post("/api/complete", upload.none(), async (req, res) => {
   const { name } = req.body;
   if (remaining.length == 0) {
     let elapsedTime = (new Date() - start) / 1000;
+    roundInProgress = false;
+    start = undefined;
+    remaining = characters.map((character) => character.name)
     await prisma.scoreBoard.create({
       data: {
         name,
@@ -58,6 +64,7 @@ app.post("/api/complete", upload.none(), async (req, res) => {
     return res.json({
       message: `Score submitted for ${name} with time ${elapsedTime} ms`,
       elapsedTime,
+      remaining
     });
   } else {
 
@@ -90,8 +97,8 @@ app.post("/api/validate", upload.none(), (req, res) => {
   if (x < 0 || y < 0 || Number.isNaN(xRatio) || Number.isNaN(yRatio)) {
     return res.status(400).json({ message: "Invalid coordinates" });
   }
-  if (Math.abs(selected.x - xRatio) <= 1 && Math.abs(selected.y - yRatio) <= 1) {
-    console.log((Math.abs(selected.x - xRatio)), Math.abs(selected.y - yRatio))
+  console.log((Math.abs(selected.x - xRatio)), Math.abs(selected.y - yRatio))
+  if (Math.abs(selected.x - xRatio) <= 1.4 && Math.abs(selected.y - yRatio) <= 1.4) {
     console.log(`${selected.name} found`);
     remaining = characters.reduce((results, character) => {
       if (character.name === characterName) {
