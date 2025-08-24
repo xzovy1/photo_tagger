@@ -54,13 +54,14 @@ app.post("/api/complete", upload.none(), async (req, res) => {
     let elapsedTime = (new Date() - start) / 1000;
     roundInProgress = false;
     start = undefined;
-    remaining = characters.map((character) => character.name)
+    remaining = characters.map((character) => { return { name: character.name, located: character.located, id: character.id } });
     await prisma.scoreBoard.create({
       data: {
         name,
         score: elapsedTime
       }
     })
+    console.log(remaining)
     return res.json({
       message: `Score submitted for ${name} with time ${elapsedTime} ms`,
       elapsedTime,
@@ -108,6 +109,7 @@ app.post("/api/validate", upload.none(), (req, res) => {
       }
       return results;
     }, []);
+    console.log(remaining)
     return res.json({
       valid: true,
       message: `${selected.name} found!`,

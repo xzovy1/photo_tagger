@@ -1,9 +1,15 @@
 import wheresWaldo from "./assets/1_7v_75ZGg1CTmWAw1rEgMHQ.webp";
 import useMousePosition from "./hooks/useMousePosition";
+import CharacterSelect from "./CharacterSelect";
 import { useState, useEffect, useRef } from "react";
 
-const Image = ({ imageClicked, setImageClicked, setLocation, magnified, locatorsRef, imageRef, showInfo, imageDimensions, setImageDimensions }) => {
+const Image = ({ magnified, characterRef, setComplete }) => {
     const mousePosition = useMousePosition();
+    const [imageClicked, setImageClicked] = useState(false);
+    const [imageDimensions, setImageDimensions] = useState({ left: null, right: null, top: null, bottom: null });
+    const [selectedLocation, setLocation] = useState({ x: null, y: null });
+    const locatorsRef = useRef(null);
+    const imageRef = useRef(null)
     const handleCharacterSelect = () => {
         setImageClicked(!imageClicked);
         setImageDimensions(imageRef.current.getBoundingClientRect())
@@ -38,6 +44,14 @@ const Image = ({ imageClicked, setImageClicked, setLocation, magnified, locators
         setImageDimensions(image.getBoundingClientRect())
     }, [magnified])
 
+    useEffect(() => {
+        const handleResize = () => {
+            const image = imageRef.current.getBoundingClientRect();
+            setImageDimensions(image)
+        };
+        window.addEventListener("resize", handleResize);
+        return () => { window.removeEventListener("resize", handleResize) }
+    }, [])
 
     let transform = `translateX(${mousePosition.x}px) translateY(${mousePosition.y}px)`;;
     //original image dimensions : 2828 * 1828
@@ -50,6 +64,13 @@ const Image = ({ imageClicked, setImageClicked, setLocation, magnified, locators
 
     return (
         <>
+            {imageClicked ?
+                <CharacterSelect
+                    selectedLocation={selectedLocation} setImageClicked={setImageClicked} setComplete={setComplete}
+                    locatorsRef={locatorsRef} imageDimensions={imageDimensions} characterRef={characterRef}
+                />
+                : null
+            }
             {
                 magnified ?
                     <div id="magnifier" style={{

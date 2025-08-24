@@ -1,10 +1,15 @@
 import { useState } from "react";
 import characters from "./characters.js"
 
-const CharacterSelect = ({ setImageClicked, selectedLocation, cancelLocation, imageDimensions, locatorsRef, characterRef, setComplete }) => {
+const CharacterSelect = ({ setImageClicked, selectedLocation, imageDimensions, locatorsRef, characterRef, setComplete }) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-
+    const cancelLocation = () => {
+        setLocation({ x: null, y: null });
+        const locators = locatorsRef.current
+        locators.children[locators.children.length - 1].remove();
+        setImageClicked(false)
+    }
     async function submit(e) {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
@@ -44,7 +49,7 @@ const CharacterSelect = ({ setImageClicked, selectedLocation, cancelLocation, im
             .finally(() => setLoading(false))
     }
     return (
-        <div class="modal">
+        <div className="modal">
             <button onClick={cancelLocation}>Cancel Selection</button>
             <form onSubmit={submit} className="characterForm">
                 <div className="characters">

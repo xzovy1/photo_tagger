@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-const Complete = ({ setComplete, intervalRef, setShowInfo, setNow, setStartTime, setTimerStarted, characterRef }) => {
+const Complete = ({ setComplete, intervalRef, setShowInfo, setTimer, characterRef }) => {
 
     function handleStop() {
         clearInterval(intervalRef.current)
@@ -22,9 +22,12 @@ const Complete = ({ setComplete, intervalRef, setShowInfo, setNow, setStartTime,
         e.target.blur();
         setComplete(false);
         setShowInfo(true);
-        setNow(null)
-        setStartTime(null)
-        setTimerStarted(false)
+        setTimer({
+            started: false,
+            now: null,
+            startTime: null
+        })
+
     }
     useEffect(() => { handleStop(); }, [])
     return (
