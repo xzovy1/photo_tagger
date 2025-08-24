@@ -5,7 +5,7 @@ const Complete = ({ setComplete, intervalRef, setShowInfo, setTimer, characterRe
     function handleStop() {
         clearInterval(intervalRef.current)
     }
-    const addScore = async (e) => {
+    const submit = async (e) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
         console.log(formData)
@@ -34,7 +34,7 @@ const Complete = ({ setComplete, intervalRef, setShowInfo, setTimer, characterRe
         <div className="modal completed">
             <h3>Good work, you did it!</h3>
 
-            <form onSubmit={addScore}>
+            <form onSubmit={submit}>
                 <label htmlFor="name">Name</label>
                 <input type="text" name="name" id="name" min={2} max={20} />
                 <button type="submit">Submit</button>

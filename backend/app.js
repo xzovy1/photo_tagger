@@ -9,7 +9,7 @@ app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 
 //using multer instead of setting content-type to x-www-form-urlencoded in fetch
-//use upload.none() middleware for forms 
+//use upload.none() middleware for forms
 //https://stackoverflow.com/questions/37630419/how-to-handle-formdata-from-express-4
 const upload = multer();
 
@@ -22,12 +22,12 @@ console.log(remaining)
 app.get("/api/scoreboard", async (req, res) => {
   const highScores = await prisma.scoreBoard.findMany({
     orderBy: {
-      score: 'asc'
+      score: "asc",
     },
-    take: 5
+    take: 5,
   });
-  return res.json({ highScores })
-})
+  return res.json({ highScores });
+});
 
 app.get("/api/start", (req, res) => {
   roundInProgress = false;
@@ -68,14 +68,13 @@ app.post("/api/complete", upload.none(), async (req, res) => {
       remaining
     });
   } else {
-
     return res.json({ remaining });
   }
 });
 
 app.get("/api/remaining", (req, res) => {
-  return res.json({ remaining })
-})
+  return res.json({ remaining });
+});
 
 // validate character name and location
 app.post("/api/validate", upload.none(), (req, res) => {
@@ -83,7 +82,7 @@ app.post("/api/validate", upload.none(), (req, res) => {
 
   function round(value1, value2) {
     let number = (parseFloat(value1) / parseFloat(value2)) * 100;
-    console.log(value1, value2)
+    console.log(value1, value2);
     return number;
   }
   const xRatio = round(x, width);
@@ -105,7 +104,11 @@ app.post("/api/validate", upload.none(), (req, res) => {
       if (character.name === characterName) {
         character.located = true;
       } else if (!character.located && character.name !== characterName) {
-        results.push({ name: character.name, id: character.id, located: character.located });
+        results.push({
+          name: character.name,
+          id: character.id,
+          located: character.located,
+        });
       }
       return results;
     }, []);

@@ -93,7 +93,7 @@ const Info = ({ setShowInfo, timer, setTimer, handleTimerStart }) => {
                         return (
                             <li key={index}>
                                 <span>{entry.name} </span>
-                                <span>{entry.score}</span>
+                                <span>{entry.score} </span>
                             </li>
                         )
                     })}

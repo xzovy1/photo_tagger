@@ -36,6 +36,7 @@ const CharacterSelect = ({ setImageClicked, selectedLocation, imageDimensions, l
                     setImageClicked(false)
                 } else {
                     setError("Location incorrect!")
+                    locators.children[locators.children.length - 1].remove();
                 }
                 if (data.remaining) {
                     characterRef.current = [...data.remaining]
